@@ -18,7 +18,8 @@
                 <el-table-column prop="notice_title">
                     <span slot-scope="scope" style="position: relative;">
                         <p>{{ scope.row.notice_title }}</p>
-                        <span>{{ friendlyDate(scope.row.create_time) }}</span>
+                        <!-- <span>{{ friendlyDate(scope.row.create_time) }}</span> -->
+
                         <i v-if="(scope.row.is_read === '未读')" class="el-icon-warning"
                             style="position: absolute;top: 60%;transform: translateY(-50%);color: tomato;"></i>
                     </span>

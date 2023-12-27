@@ -30,6 +30,7 @@ const mutations = {
         state.front_reserve_info = result.reserve_info
         state.echarts_info = result.echarts_info
         state.get_time_dict = result.get_time_dict
+        // state.get_time_dict = {}
         // 排序
         let keyArr = Object.keys(state.get_time_dict).sort(function (a, b) {
             return state.get_time_dict[b] - state.get_time_dict[a]

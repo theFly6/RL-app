@@ -33,7 +33,7 @@
             <div class="floor flex-center">
                 <!-- 左侧折线图: 座位使用次数占比 -->
                 <div class="left-line">
-                 
+                    <LineChart :echarts_info="echarts_info"></LineChart>
                 </div>
                 <!-- 右侧排名 -->
                 <div class="right-ranking">
@@ -58,7 +58,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { user_identity_admin, user_identity_user } from '@/config'
-import LineChart from './LineChart'
+import LineChart from './LineChart1'
 import PieChart from './PieChart'
 export default {
     name: 'Home',

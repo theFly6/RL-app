@@ -39,13 +39,14 @@
                         <el-menu-item index="0" @click.native.prevent.stop="$router.push('/')">
                             首页
                         </el-menu-item>
-                        <el-submenu index="1">
+                        <!-- <el-submenu index="1">
                             <template slot="title">新建实验</template>
                             <el-menu-item index="1-1"
-                                @click.native.prevent.stop="goPath('addtest')">新建实验</el-menu-item>
+                                @click.native.prevent.stop="goPath('addtest')">实验管理</el-menu-item>
                             <el-menu-item index="1-2"
-                                @click.native.prevent.stop="goPath('reserveinfo')">实验展示</el-menu-item>
-                        </el-submenu>
+                                @click.native.prevent.stop="goPath('reserveinfo')">实验管理</el-menu-item>
+                        </el-submenu> -->
+                        <el-menu-item index="1" @click.native.prevent.stop="goPath('addtest')">实验管理</el-menu-item>
                         <el-menu-item index="3" @click.native.prevent.stop="goPath('feedback')">问题反馈</el-menu-item>
                         <el-menu-item index="4" style="position: relative;"
                             @click.native.prevent.stop="goPath('notice')">

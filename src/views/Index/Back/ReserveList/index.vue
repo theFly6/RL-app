@@ -438,11 +438,9 @@ export default {
                         username = '1111111111111111111111111111111111111'
                     }
                 }
-                let user_status = Number.parseInt(this.searchForm.user_status) || 0
-                if (user_status === 0) user_status = '全部'
-                else if (user_status === 1) user_status = user_status_true
-                else if (user_status === 2) user_status = user_status_false
-                await this.$store.dispatch('getTestList', JSON.stringify({ page_no, page_size, account, username, user_status,create_name }))
+               
+                let test_status = '正常'
+                await this.$store.dispatch('getTestList', JSON.stringify({ page_no, page_size, account, username, test_status,create_name }))
             } catch (e) {
                 this.$message({ type: 'warning', message: e.message })
             }

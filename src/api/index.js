@@ -90,7 +90,7 @@ export const reqGetTestList = (data) => axios({ url: '/front/test/gettestlist', 
 // 修改实验信息
 export const reqUpdateTestInfo = (data) => axios({ url: '/front/test/updatetestinfo', data, method: 'post' })
 
-
-
-
-
+// 获取实验数据
+export const reqGetEchartsList = (data) => axios({ url: '/front/echarts/getechartslist', data, method: 'post' })
+// 获取实验详情列表（根据id获取当前实验的各个子实验）
+export const reqGetTestDetail = (data) => axios({ url: '/front/test/gettestDetail', data, method: 'post' })

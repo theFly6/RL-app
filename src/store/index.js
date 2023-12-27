@@ -13,6 +13,9 @@ import backreserve from './back/reserve'
 import frontnotice from './front/notice'
 import frontseat from './front/seat'
 import fronttest from './front/test'
+
+import frontecharts from './front/echarts'
+import frontdetail from './front/detail'
 // 
 export default new Vuex.Store({
     modules: {
@@ -26,5 +29,7 @@ export default new Vuex.Store({
         frontnotice,
         frontseat,
         fronttest,
+        frontecharts,
+        frontdetail,
     }
 })

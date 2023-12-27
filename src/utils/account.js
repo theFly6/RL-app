@@ -5,7 +5,7 @@ import { expire, setExpire, getExpire } from './storage'
  * @params String {value} 值
  */
 export const setAccount = (account) => {
-    setExpire('LIBRARY-ACCOUNT', account, expire * 15)
+    setExpire('RL-ACCOUNT', account, expire * 15)
 }
 
 /**
@@ -13,12 +13,12 @@ export const setAccount = (account) => {
  * @returns String {value} 值
  */
 export const getAccount = () => {
-    return getExpire('LIBRARY-ACCOUNT')
+    return getExpire('RL-ACCOUNT')
 }
 
 /**
  * 清除本地存储的account
  */
 export const removeAccount = () => {
-    localStorage.removeItem('LIBRARY-ACCOUNT')
+    localStorage.removeItem('RL-ACCOUNT')
 }

@@ -6,13 +6,16 @@
         </div>
         <!-- 主体 -->
         <main class="main">
+            <div  ref="result">
+
+            </div>
             <!-- 介绍 -->
-            <div class="intro">
+           <div class="intro">
                 <p class="flex-center">在使用本系统中遇到了什么问题, 或者对于本系统有什么建议,</p>
                 <p class="flex-center">又或者有什么想对开发者说的话, 等等, 都可以在这里提出来</p>
-            </div>
+            </div> 
             <!-- 表单 -->
-            <el-form class="from" ref="feedbackFrom" :model="feedbackFrom" label-width="80px" label-position="top"
+             <el-form class="from" ref="feedbackFrom" :model="feedbackFrom" label-width="80px" label-position="top"
                 hide-required-asterisk>
                 <el-form-item label="问题反馈" prop="info">
                     <el-input type="textarea" v-model="feedbackFrom.info" :rows="5"></el-input>
@@ -21,20 +24,23 @@
                     <el-button type="primary" @click.native.prevent.stop="handlerSubmit">提交</el-button>
                     <el-button @click.native.prevent.stop="resetForm('feedbackFrom')">重置</el-button>
                 </el-form-item>
-            </el-form>
+            </el-form> 
         </main>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import shap from 'shap'
 export default {
     name: 'Feedback',
     data() {
+       
         return {
             feedbackFrom: {
                 info: ''
             },
+            
         }
     },
     computed: {

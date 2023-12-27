@@ -1,7 +1,7 @@
 <template>
     <div class="front maxWH">
         <!-- 前端页面路由匹配到的组件将渲染在这里 -->
-        <router-view v-if="(identity === user_identity_user)"></router-view>
+        <router-view v-if="(identity === user_identity_user)" :key="$route.fullPath"></router-view>
     </div>
 </template>
 

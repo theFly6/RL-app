@@ -8,6 +8,7 @@ export default [
         path: '/',
         redirect: '/index/home'
     },
+    
     {
         path: '/index',
         component: () => import('@/views/Index'),
@@ -64,7 +65,8 @@ export default [
                     },
                     {
                         path: 'reserveinfo',
-                        component: () => import('@/views/Index/Front/ReserveInfo')
+                        component: () => import('@/views/Index/Front/ReserveInfo'),
+                        props:true
                     },
                     {
                         path: 'feedback',
@@ -74,13 +76,27 @@ export default [
                         path: 'addtest',
                         component: () => import('@/views/Index/Front/AddTest')
                     },
-                ]
-            },
-        ],
+                    {
+                        path: 'testinfo',
+                        component: () => import('@/views/Index/Front/TestInfo')
+                    },
+                    {
+                        path: 'testdetail',
+                        component: () => import('@/views/Index/Front/TestDetail')
+                    },
+                    {
+                        path: 'episodeinfo',
+                        component: () => import('@/views/Index/Front/EpisodeInfo'),
+                        props:true
+                    }
+                ]  
+            }     
+        ]
     },
     {
         path: '/login',
         name: 'login',
         component: () => import('@/views/Login')
-    },
+    }
+
 ]

@@ -28,9 +28,11 @@ const actions = {
             return Promise.reject(new Error(result.msg || 'fail'))
         }
     },
-    // 获取用户列表
+    // 获取实验列表
     async getTestList({ commit }, info) {
+        console.log(info)
        let result = await reqGetTestList(info)
+       
         // let result = await reqGetUserList(info)
         result = result.data
         

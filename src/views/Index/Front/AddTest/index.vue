@@ -8,7 +8,7 @@
         <el-table :data="testlist" border style="width: 100%" max-height="250">
            
             <el-table-column prop="test_name" label="实验名" show-overflow-tooltip>
-                <!-- <div>{{ testlist }}</div> -->
+               
             </el-table-column>
             <el-table-column prop="user_name" label="实验者">
             </el-table-column>
@@ -16,12 +16,24 @@
             </el-table-column>
             <el-table-column prop="create_time" label="创建时间" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="操作" header-align="center">
+            <el-table-column label="操作" header-align="center" >
                 <template slot-scope="scope">
                     <div class="handler flex-center">
                         <el-button type="warning" @click.native.prevent.stop="openUpdateTest(scope.$index, testlist)">
                             修改
                         </el-button>
+                        <el-button type="warning" @click.native.prevent.stop="goPath('testdetail',scope.row.test_id)"> 
+                            历史实验
+                        </el-button>
+                       
+                        <!-- <el-button type="warning" @click.native.prevent.stop="goPath('reserveinfo',scope.$index)">
+                            查看实验
+                        </el-button> -->
+                       
+                       
+                        <!-- <el-button type="warning" @click.native.prevent.stop="openDetailTest(scope.$index, testlist)">
+                            实验参数
+                        </el-button> -->
                        
                     </div>
                 </template>
@@ -71,7 +83,7 @@
                     </el-input>
                 </el-form-item>
         
-                <el-form-item label="用户状态" prop="test_status">
+                <el-form-item label="实验状态" prop="test_status">
                     <el-radio-group v-model="testUpdateForm.test_status">
                         <el-radio :label="test_status[1].label"></el-radio>
                         <el-radio :label="test_status[2].label"></el-radio>
@@ -82,6 +94,35 @@
                 <el-button type="primary" @click.native.prevent.stop="updateTest('testUpdateForm')">确 定</el-button>
                 <el-button @click.native.prevent.stop="resetForm1('testUpdateForm')">重 置</el-button>
             </div>
+        </el-dialog>
+
+         <!-- 实验参数展示 -->
+         <el-dialog title="实验参数" :visible.sync="testDetailDialog">
+            <el-form ref="testDetailForm" :model="testDetailForm" label-width="80px" :rules="rules"
+                hide-required-asterisk>
+                <el-form-item label="seed"  prop="seed">
+                    <el-input disabled v-model.trim="testDetailForm.seed"></el-input>
+                </el-form-item>
+                <el-form-item label="env_id" prop="env_id">
+                    <el-input disabled v-model.trim="testDetailForm.env_id" >
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="learning_rate" prop="learning_rate">
+                    <el-input disabled v-model.trim="testDetailForm.learning_rate" >
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="input_size" prop="input_size">
+                    <el-input disabled v-model.trim="testDetailForm.input_size" >
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="info" prop="info">
+                    <el-input disabled v-model.trim="testDetailForm.info" >
+                    </el-input>
+                </el-form-item>
+               
+        
+                
+            </el-form>
         </el-dialog>
     </div>
 </template>
@@ -189,6 +230,16 @@ export default {
                 username: '',
                 create_name:'',
                 test_status:''
+            },
+             // 实验参数表单
+            testDetailDialog:false,
+            // 实验参数表单
+            testDetailForm: {
+                seed: '',
+                env_id: '',
+                learning_rate:'',
+                input_size:'',
+                info:'',
             },
             // 修改用户信息表单
             userUpdateForm: {
@@ -312,6 +363,25 @@ export default {
             }
            
         },
+         // 打开实验参数的遮罩页
+         openDetailTest(index, rows) {
+            this.testDetailDialog = true
+            const testinfo = rows[index]
+            // 获取当前用户的信息
+            this.testDetailForm = {
+                test_id:testinfo.test_id,
+                test_name: testinfo.test_name,
+                user_name: testinfo.user_name,
+                
+                test_status: testinfo.test_status,
+                seed: testinfo.seed,
+                env_id: testinfo.env_id,
+                learning_rate: testinfo.learning_rate,
+                input_size: testinfo.input_size,
+                info: testinfo.info,
+            }
+           
+        },
         // 修改用户信息
         async updateUser(formname) {
             await this.$refs[formname].validate(async vaild => {
@@ -400,7 +470,7 @@ export default {
          async getTestList() {
             // return '111'
             try {
-                console.log(this.searchForm)
+                // console.log(this.searchForm)
                 const { page_no, page_size } = this
                 let account = this.searchForm.account
             
@@ -418,11 +488,9 @@ export default {
                         username = '1111111111111111111111111111111111111'
                     }
                 }
-                let user_status = Number.parseInt(this.searchForm.user_status) || 0
-                if (user_status === 0) user_status = '全部'
-                else if (user_status === 1) user_status = user_status_true
-                else if (user_status === 2) user_status = user_status_false
-                await this.$store.dispatch('getTestList', JSON.stringify({ page_no, page_size, account, username, user_status,create_name }))
+               
+                let test_status = '正常'
+                await this.$store.dispatch('getTestList', JSON.stringify({ page_no, page_size, account, username, test_status,create_name }))
             } catch (e) {
                 this.$message({ type: 'warning', message: e.message })
             }
@@ -437,6 +505,26 @@ export default {
             this.page_no = 1
             this.page_size = this.page_sizes[0]
             this.getTestList()
+        },
+    
+          // 去哪个页面
+          goPath(path,id) {
+          
+            // this.$router.push(path+'/'+id)
+            // console.log(path)
+            // this.$router.push(path)
+            this.$router.push({path:path,query:{parent_id:id}});
+            // this.$router.push({name:this.getFrontPath(path,id),params:{id:id}})
+
+        },
+        // 路由判断
+        getFrontPath(path) {
+            let href = this.$route.path
+            if (href.includes('front')) {
+                return path
+            } else {
+                return 'front/' + path
+            }
         },
     },
 }
