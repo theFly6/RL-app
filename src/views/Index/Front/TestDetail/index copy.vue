@@ -1,43 +1,36 @@
 <template>
     <div class="test-list maxWH clearfix">
        
-        <!-- 添加 -->
-        <el-button type="primary" @click.native.prevent.stop="testAddDialog = true"
-            style="margin: 15px 0;">添加算法</el-button>
+       
+       
         <!-- 列表显示实验 -->
-        <el-table :data="testlist" border style="width: 100%" max-height="250">
+        <el-table :data="testdetail" border style="width: 100%" max-height="250">
            
-            <el-table-column prop="test_name" label="算法名" show-overflow-tooltip>
-               
+            <el-table-column prop="test_name" label="实验名" show-overflow-tooltip>
+                
+            </el-table-column>
+            <el-table-column prop="test_id" label="实验id" show-overflow-tooltip>
+                
             </el-table-column>
             <el-table-column prop="user_name" label="实验者">
             </el-table-column>
-            <el-table-column prop="test_status" label="实验状态">
-            </el-table-column>
+            
             <el-table-column prop="create_time" label="创建时间" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="操作" header-align="center" >
+            <el-table-column label="操作" prop="test_id" header-align="center">
                 <template slot-scope="scope">
                     <div class="handler flex-center">
-                        <el-button type="warning" @click.native.prevent.stop="openUpdateTest(scope.$index, testlist)">
-                            修改
-                        </el-button>
-                        <el-button type="warning" @click.native.prevent.stop="goPath('testdetail',scope.row.test_id)"> 
-                            历史实验
-                        </el-button>
-                        
-                        <!-- <el-button type="warning" @click.native.prevent.stop="goPath('reserveinfo',scope.$index)">
+                         <el-button type="warning" @click.native.prevent.stop="goPath('reserveinfo',scope.row.test_id)">
                             查看实验
-                        </el-button> -->
-                       
-                       
-                        <el-button type="warning" @click.native.prevent.stop="openDetailTest(scope.$index, testlist)">
-                            参数推荐
+                        </el-button> 
+                        <el-button type="warning" @click.native.prevent.stop="openDetailTest(scope.$index, testdetail)">
+                            实验参数
                         </el-button>
                        
                     </div>
                 </template>
             </el-table-column>
+          
         </el-table>
         <!-- 分页器 -->
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page_no"
@@ -46,147 +39,37 @@
         </el-pagination>
         <!-- dialog -->
         <!-- 添加实验 -->
-        <el-dialog title="添加实验" :visible.sync="testAddDialog">
-            <!-- el-form-item是el-form的子组件，父组件中使用:model="testAddForm"则子组件中调用父组件的值可以用testAddForm.account-->
-            <el-form ref="testAddForm" :model="testAddForm" label-width="80px" :rules="rules">
-                 <!-- prop=“规则名” 验证表单里元素属性 -->
-                <el-form-item label="算法名" prop="account">
-                    <el-input v-model.trim="testAddForm.account" autocomplete="off" placeholder="请输入算法名"></el-input>
-                </el-form-item>
-                <el-form-item label="用户名" prop="username">
-                    <el-input v-model.trim="testAddForm.username" autocomplete="off" placeholder="请输入用户名">
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="算法状态" prop="test_status">
-                    <!-- v-model 实现双向绑定-->
-                    <el-radio-group v-model="testAddForm.test_status">
-                        <el-radio :label="test_status[1].label"></el-radio>
-                        <el-radio :label="test_status[2].label"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer" align="center">
-                <el-button type="primary" @click.native.prevent.stop="addTest('testAddForm')">确 定</el-button>
-                <el-button @click.native.prevent.stop="resetForm('testAddForm')">重 置</el-button>
-            </div>
-        </el-dialog>
+       
         <!-- 修改实验信息 -->
-        <el-dialog title="修改算法信息" :visible.sync="testUpdateDialog">
-            <el-form ref="testUpdateForm" :model="testUpdateForm" label-width="80px" :rules="rules"
-                hide-required-asterisk>
-                <el-form-item label="算法名"  prop="test_name">
-                    <el-input v-model.trim="testUpdateForm.test_name" autocomplete="off"
-                        placeholder="请输入算法名"></el-input>
-                </el-form-item>
-                <el-form-item label="实验者" prop="user_name">
-                    <el-input v-model.trim="testUpdateForm.user_name" autocomplete="off" placeholder="请输入实验者">
-                    </el-input>
-                </el-form-item>
-        
-                <el-form-item label="算法状态" prop="test_status">
-                    <el-radio-group v-model="testUpdateForm.test_status">
-                        <el-radio :label="test_status[1].label"></el-radio>
-                        <el-radio :label="test_status[2].label"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer" align="center">
-                <el-button type="primary" @click.native.prevent.stop="updateTest('testUpdateForm')">确 定</el-button>
-                <el-button @click.native.prevent.stop="resetForm1('testUpdateForm')">重 置</el-button>
-            </div>
-        </el-dialog>
+       
 
          <!-- 实验参数展示 -->
-         <el-dialog title="推荐超参数" :visible.sync="testDetailDialog">
-            <el-form ref="testDetailForm" :model="testDetailForm" label-width="110px" :rules="rules"
+         <el-dialog title="实验参数" :visible.sync="testDetailDialog">
+            <el-form ref="testDetailForm" :model="testDetailForm" label-width="80px" :rules="rules"
                 hide-required-asterisk>
-                <el-row>  
-                    <el-col :span="8"> <!-- 这里设置 span 为 8，表示占据三分之一的空间 ，使用的是 24 列的栅格系统-->  
-                        <el-form-item label="learning_rate"  prop="learning_rate" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.learning_rate"></el-input>
-                        </el-form-item>
-                    </el-col>
-                     
-                    <el-col :span="8"> 
-                        <el-form-item label="batch_size"  prop="batch_size" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.batch_size"></el-input>
-                        </el-form-item>
-                    </el-col>  
-                     
-                    <el-col :span="8"> 
-                        <el-form-item label="tau"  prop="tau" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.tau"></el-input>
-                        </el-form-item>
-                    </el-col> 
-                </el-row> 
-                 
+                <el-form-item label="seed"  prop="seed">
+                    <el-input disabled v-model.trim="testDetailForm.seed"></el-input>
+                </el-form-item>
+                <el-form-item label="env_id" prop="env_id">
+                    <el-input disabled v-model.trim="testDetailForm.env_id" >
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="learning_rate" prop="learning_rate">
+                    <el-input disabled v-model.trim="testDetailForm.learning_rate" >
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="input_size" prop="input_size">
+                    <el-input disabled v-model.trim="testDetailForm.input_size" >
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="info" prop="info">
+                    <el-input disabled v-model.trim="testDetailForm.info" >
+                    </el-input>
+                </el-form-item>
+               
         
-                <el-row>  
-                    <el-col :span="8"> <!-- 这里设置 span 为 8，表示占据三分之一的空间 ，使用的是 24 列的栅格系统-->  
-                        <el-form-item label="gamma"  prop="gamma" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.gamma"></el-input>
-                        </el-form-item>
-                    </el-col>  
-                     
-                    <el-col :span="8"> 
-                        <el-form-item label="learning_starts"  prop="learning_starts" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.learning_starts"></el-input>
-                        </el-form-item>
-                    </el-col>  
-                     
-                    <el-col :span="8"> 
-                        <el-form-item label="train_freq"  prop="train_freq" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.train_freq"></el-input>
-                        </el-form-item>
-                    </el-col> 
-                </el-row> 
-
-
-                <el-row>  
-                    <el-col :span="8"> <!-- 这里设置 span 为 8，表示占据三分之一的空间 ，使用的是 24 列的栅格系统-->  
-                        <el-form-item label="gradient_steps"  prop="gradient_steps" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.gradient_steps"></el-input>
-                        </el-form-item>
-                    </el-col>  
-                     
-                    <el-col :span="8"> 
-                        <el-form-item label="exploration_fraction"  prop="exploration_fraction" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.exploration_fraction"></el-input>
-                        </el-form-item>
-                    </el-col>  
-                     
-                    <el-col :span="8"> 
-                        <el-form-item label="exploration_initial_eps"  prop="exploration_initial_eps" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.exploration_initial_eps"></el-input>
-                        </el-form-item>
-                    </el-col> 
-                </el-row> 
-
-
-                <el-row>  
-                    <el-col :span="8"> <!-- 这里设置 span 为 8，表示占据三分之一的空间 ，使用的是 24 列的栅格系统-->  
-                        <el-form-item label="buffer_size"  prop="buffer_size" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.buffer_size"></el-input>
-                        </el-form-item>
-                    </el-col>  
-                     
-                    <el-col :span="8"> 
-                        <el-form-item label="ent_coef"  prop="ent_coef" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.ent_coef"></el-input>
-                        </el-form-item>
-                    </el-col>  
-                     
-                    <el-col :span="8"> 
-                        <el-form-item label="vf_coef"  prop="vf_coef" >
-                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.vf_coef"></el-input>
-                        </el-form-item>
-                    </el-col> 
-                </el-row> 
-
                 
             </el-form>
-           
-            <!-- <div class="el-dialog__title">mean reward:-1303.4206398</div>  -->
         </el-dialog>
     </div>
 </template>
@@ -327,7 +210,7 @@ export default {
     
     // vuex中mapGetters的使用
     computed: {
-        ...mapGetters(['user_id', 'userlist','testlist', 'user_count','test_count','userinfo'])
+        ...mapGetters(['user_id', 'userlist','testlist', 'user_count','test_count','userinfo','testdetail'])
     },
     mounted() {
         this.searchForm.user_status = this.user_status[0].value
@@ -337,6 +220,8 @@ export default {
         this.getUserList()
         //获取实验列表
         this.getTestList()
+        //获取实验详细列表
+        this.getDetailList()
     },
     methods: {
         // 重置表单
@@ -360,7 +245,7 @@ export default {
             await this.$refs[formname].validate(async vaild => {
                 if (vaild) {
                     
-                    return
+                   
                     try {
                         await this.$store.dispatch('addUser', JSON.stringify(this.userAddForm))
                             .then(res => {
@@ -388,7 +273,7 @@ export default {
                                 this.resetForm(formname)
                                 this.testAddDialog = false
                                 this.$message({ type: 'success', message: res })
-                                // 重新获取用户列表
+                                // 重新获取实验列表
                                 this.getTestList()
                             }).catch(err => this.$message({ type: 'warning', message: err.message }))
                     } catch (e) {
@@ -415,7 +300,6 @@ export default {
         },
           // 打开修改实验信息的遮罩页
           openUpdateTest(index, rows) {
-            
             this.testUpdateDialog = true
             const testinfo = rows[index]
             // 获取当前用户的信息
@@ -430,29 +314,22 @@ export default {
         },
          // 打开实验参数的遮罩页
          openDetailTest(index, rows) {
-            
             this.testDetailDialog = true
             const testinfo = rows[index]
-            let str = testinfo.hyperparameters;
-            const hyperparameters = JSON.parse(str);
-            // console.log(testinfo)
-            
             // 获取当前用户的信息
             this.testDetailForm = {
-                learning_rate: hyperparameters.learning_rate,
-                batch_size: hyperparameters.batch_size,
-                tau: hyperparameters.tau,
-                gamma: hyperparameters.gamma,
-                train_freq: hyperparameters.train_freq,
-                learning_rate: hyperparameters.learning_rate,
-                gradient_steps: hyperparameters.gradient_steps,
-                exploration_fraction: hyperparameters.exploration_fraction,
-                exploration_initial_eps: hyperparameters.exploration_initial_eps,
-                buffer_size: hyperparameters.buffer_size,
-                ent_coef: hyperparameters.ent_coef,
-                vf_coef: hyperparameters.vf_coef,
+                test_id:testinfo.test_id,
+                test_name: testinfo.test_name,
+                user_name: testinfo.user_name,
+                
+                test_status: testinfo.test_status,
+                seed: testinfo.seed,
+                env_id: testinfo.env_id,
+                learning_rate: testinfo.learning_rate,
+                input_size: testinfo.input_size,
+                info: testinfo.info,
             }
-            
+           
         },
         // 修改用户信息
         async updateUser(formname) {
@@ -492,7 +369,7 @@ export default {
                                 this.resetForm(formname)
                                 this.testUpdateDialog = false
                                 this.$message({ type: 'success', message: res })
-                                // 重新获取用户列表
+                                // 重新获取实验列表
                                 this.getTestList()
                             }).catch(err => this.$message({ type: 'warning', message: err.message }))
                     } catch (e) {
@@ -542,7 +419,38 @@ export default {
          async getTestList() {
             // return '111'
             try {
-                // console.log(this.searchForm)
+                console.log(this.$route.query.parent_id)
+                let parent_id = this.$route.query.parent_id
+                const { page_no, page_size } = this
+                let account = this.searchForm.account
+            
+                const reg = /^[0-9]{1,12}$/
+                if (!reg.test(account)) {
+                    if (account !== '') {
+                        account = '1111111111111111111111111111111111111'
+                    }
+                }
+                let username = this.searchForm.username
+                let create_name = this.searchForm.create_name
+                const name_reg = /^[\u4e00-\u9fa50-9a-zA-Z]{1,6}$/
+                if (!name_reg.test(username)) {
+                    if (username !== '') {
+                        username = '1111111111111111111111111111111111111'
+                    }
+                }
+                let test_status = '正常'
+                await this.$store.dispatch('getTestList', JSON.stringify({ page_no, page_size, account, username, test_status,create_name }))
+            } catch (e) {
+                this.$message({ type: 'warning', message: e.message })
+            }
+        },
+         // 获取实验详细列表
+         async getDetailList() {
+            
+            try {
+                
+                // console.log(this.$route.query.parent_id)
+                let parent_id = this.$route.query.parent_id
                 const { page_no, page_size } = this
                 let account = this.searchForm.account
             
@@ -562,7 +470,11 @@ export default {
                 }
                
                 let test_status = '正常'
-                await this.$store.dispatch('getTestList', JSON.stringify({ page_no, page_size, account, username, test_status,create_name }))
+                await this.$store.dispatch('getDetailList', JSON.stringify({ page_no, page_size, account, username, test_status,create_name,parent_id}))
+                // await this.$store.dispatch('getTestList', JSON.stringify({ page_no, page_size, account, username, user_status,create_name }))
+                
+                // await this.$store.dispatch('getTestDetail', JSON.stringify({ page_no, page_size, account, username, user_status,create_name }))
+
             } catch (e) {
                 this.$message({ type: 'warning', message: e.message })
             }
@@ -581,11 +493,8 @@ export default {
     
           // 去哪个页面
           goPath(path,id) {
-          
-            // this.$router.push(path+'/'+id)
-            // console.log(path)
-            // this.$router.push(path)
-            this.$router.push({path:path,query:{parent_id:id}});
+            // console.log(id)
+            this.$router.push({path:path,query:{test_detail_id:id}});
             // this.$router.push({name:this.getFrontPath(path,id),params:{id:id}})
 
         },

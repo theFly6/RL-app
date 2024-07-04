@@ -23,7 +23,7 @@
         </div>
         <!-- 添加 -->
         <el-button type="primary" @click.native.prevent.stop="testAddDialog = true"
-            style="margin: 15px 0;">添加实验</el-button>
+            style="margin: 15px 0;">添加算法</el-button>
         <!-- 列表显示实验 -->
         <el-table :data="testlist" border style="width: 100%" max-height="250">
            

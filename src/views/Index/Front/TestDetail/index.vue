@@ -38,38 +38,105 @@
             :total="test_count" style="padding: 10px 0;">
         </el-pagination>
         <!-- dialog -->
-        <!-- 添加实验 -->
        
-        <!-- 修改实验信息 -->
+       
+        
        
 
          <!-- 实验参数展示 -->
-         <el-dialog title="实验参数" :visible.sync="testDetailDialog">
-            <el-form ref="testDetailForm" :model="testDetailForm" label-width="80px" :rules="rules"
+         <el-dialog title="超参数" :visible.sync="testDetailDialog">
+            <el-form ref="testDetailForm" :model="testDetailForm" label-width="110px" :rules="rules"
                 hide-required-asterisk>
-                <el-form-item label="seed"  prop="seed">
-                    <el-input disabled v-model.trim="testDetailForm.seed"></el-input>
-                </el-form-item>
-                <el-form-item label="env_id" prop="env_id">
-                    <el-input disabled v-model.trim="testDetailForm.env_id" >
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="learning_rate" prop="learning_rate">
-                    <el-input disabled v-model.trim="testDetailForm.learning_rate" >
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="input_size" prop="input_size">
-                    <el-input disabled v-model.trim="testDetailForm.input_size" >
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="info" prop="info">
-                    <el-input disabled v-model.trim="testDetailForm.info" >
-                    </el-input>
-                </el-form-item>
-               
+                <el-row>  
+                    <el-col :span="8"> <!-- 这里设置 span 为 8，表示占据三分之一的空间 ，使用的是 24 列的栅格系统-->  
+                        <el-form-item label="learning_rate"  prop="learning_rate" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.learning_rate"></el-input>
+                        </el-form-item>
+                    </el-col>  
+                     
+                    <el-col :span="8"> 
+                        <el-form-item label="batch_size"  prop="batch_size" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.batch_size"></el-input>
+                        </el-form-item>
+                    </el-col>
+                     
+                    <el-col :span="8"> 
+                        <el-form-item label="tau"  prop="tau" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.tau"></el-input>
+                        </el-form-item>
+                    </el-col> 
+                </el-row> 
+                 
         
+                <el-row>  
+                    <el-col :span="8"> <!-- 这里设置 span 为 8，表示占据三分之一的空间 ，使用的是 24 列的栅格系统-->  
+                        <el-form-item label="gamma"  prop="gamma" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.gamma"></el-input>
+                        </el-form-item>
+                    </el-col>  
+                     
+                    <el-col :span="8"> 
+                        <el-form-item label="learning_starts"  prop="learning_starts" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.seed"></el-input>
+                        </el-form-item>
+                    </el-col>  
+                     
+                    <el-col :span="8"> 
+                        <el-form-item label="train_freq"  prop="train_freq" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.train_freq"></el-input>
+                        </el-form-item>
+                    </el-col> 
+                </el-row> 
+
+
+                <el-row>  
+                    <el-col :span="8"> <!-- 这里设置 span 为 8，表示占据三分之一的空间 ，使用的是 24 列的栅格系统-->  
+                        <el-form-item label="gradient_steps"  prop="gradient_steps" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.gradient_steps"></el-input>
+                        </el-form-item>
+                    </el-col>  
+                     
+                    <el-col :span="8"> 
+                        <el-form-item label="exploration_fraction"  prop="exploration_fraction" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.exploration_fraction"></el-input>
+                        </el-form-item>
+                    </el-col>  
+                     
+                    <el-col :span="8"> 
+                        <el-form-item label="exploration_initial_eps"  prop="exploration_initial_eps" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.exploration_initial_eps"></el-input>
+                        </el-form-item>
+                    </el-col> 
+                </el-row> 
+
+
+                <el-row>  
+                    <el-col :span="8"> <!-- 这里设置 span 为 8，表示占据三分之一的空间 ，使用的是 24 列的栅格系统-->  
+                        <el-form-item label="buffer_size"  prop="buffer_size" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.buffer_size"></el-input>
+                        </el-form-item>
+                    </el-col>  
+                     
+                    <el-col :span="8"> 
+                        <el-form-item label="ent_coef"  prop="ent_coef" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.ent_coef"></el-input>
+                        </el-form-item>
+                    </el-col>  
+                     
+                    <el-col :span="8"> 
+                        <el-form-item label="vf_coef"  prop="vf_coef" >
+                            <el-input :style="{ width: '80px' }" disabled v-model.trim="testDetailForm.vf_coef"></el-input>
+                        </el-form-item>
+                    </el-col> 
+                </el-row> 
+
                 
             </el-form>
+            <div slot="footer" class="dialog-footer" >
+                <el-button type="primary" @click.native.prevent.stop="evaluateTest('testDetailForm')">提交计算</el-button>
+                <!-- <el-button type="primary" @click.native.prevent.stop="updateTest('testUpdateForm')">确 定</el-button> -->
+            </div>
+            <div class="el-dialog__title">mean reward:-1303.4206398</div> 
         </el-dialog>
     </div>
 </template>
@@ -316,19 +383,28 @@ export default {
          openDetailTest(index, rows) {
             this.testDetailDialog = true
             const testinfo = rows[index]
-            // 获取当前用户的信息
+            let str = testinfo.hyperparameters;
+            const hyperparameters = JSON.parse(str);
+            // 获取当前实验的信息
             this.testDetailForm = {
                 test_id:testinfo.test_id,
                 test_name: testinfo.test_name,
-                user_name: testinfo.user_name,
-                
+                user_name: testinfo.user_name,              
                 test_status: testinfo.test_status,
-                seed: testinfo.seed,
-                env_id: testinfo.env_id,
-                learning_rate: testinfo.learning_rate,
-                input_size: testinfo.input_size,
-                info: testinfo.info,
+                learning_rate: hyperparameters.learning_rate,
+                batch_size: hyperparameters.batch_size,
+                tau: hyperparameters.tau,
+                gamma: hyperparameters.gamma,
+                train_freq: hyperparameters.train_freq,
+                learning_rate: hyperparameters.learning_rate,
+                gradient_steps: hyperparameters.gradient_steps,
+                exploration_fraction: hyperparameters.exploration_fraction,
+                exploration_initial_eps: hyperparameters.exploration_initial_eps,
+                buffer_size: hyperparameters.buffer_size,
+                ent_coef: hyperparameters.ent_coef,
+                vf_coef: hyperparameters.vf_coef,
             }
+        
            
         },
         // 修改用户信息
@@ -356,14 +432,23 @@ export default {
             })
         },
          // 修改实验信息
-         async updateTest(formname) {
+         async evaluateTest(formname) {
             try {
                         const testinfo = {
-                            test_id: this.testUpdateForm.test_id,
-                            test_name: this.testUpdateForm.test_name,
-                            user_name: this.testUpdateForm.user_name,
-                            test_status: this.testUpdateForm.test_status
+                            learning_rate: this.testDetailForm.learning_rate,
+                            batch_size: this.testDetailForm.batch_size,
+                            tau: this.testDetailForm.tau,
+                            gamma: this.testDetailForm.gamma,
+                            learning_starts: this.testDetailForm.learning_starts,
+                            train_freq: this.testDetailForm.train_freq,
+                            gradient_steps: this.testDetailForm.gradient_steps,
+                            exploration_fraction: this.testDetailForm.exploration_fraction,
+                            exploration_initial_eps: this.testDetailForm.exploration_initial_eps,
+                            buffer_size: this.testDetailForm.buffer_size,
+                            ent_coef: this.testDetailForm.ent_coef,
+                            vf_coef: this.testDetailForm.vf_coef,
                         }
+                        
                         await this.$store.dispatch('updateTestInfo', JSON.stringify(testinfo))
                             .then(res => {
                                 this.resetForm(formname)
@@ -529,4 +614,7 @@ export default {
         }
     }
 }
+.short-input {  
+  width: 150px; /* 或者其他你想要的宽度 */  
+} 
 </style>
