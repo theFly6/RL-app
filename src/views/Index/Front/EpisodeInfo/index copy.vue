@@ -171,6 +171,9 @@ export default {
     padding: .1rem;
 
     .header {
+        margin-top: 2%;
+        border-radius: .05rem;
+        box-shadow: 0 0 .1rem rgba(0, 0, 0, .1);
         width: 100%;
         height: 100%;
         justify-content: space-between;

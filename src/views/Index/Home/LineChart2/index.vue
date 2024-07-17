@@ -15,8 +15,8 @@ export default {
        
         let lineCharts = echarts.init(this.$refs.lineCharts)
         if (!this.echarts_info || typeof this.echarts_info.learning_curve !== 'string') {  
-        console.error(this.echarts_info);  
-        console.error('echarts_info 或 learning_curve 未正确初始化');  
+        // console.error(this.echarts_info);  
+        // console.error('echarts_info 或 learning_curve 未正确初始化');  
         return;  
     }  
         // 配置数据

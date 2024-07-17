@@ -30,13 +30,30 @@ let data = JSON.parse('[' + str.replace(/\]\[/g, '],[') + ']').map(function (ite
         // 初始化echarts实例
         let lineCharts = echarts.init(this.$refs.lineCharts)
         if (!this.echarts_info || typeof this.echarts_info.learning_curve !== 'string') {  
-        console.error(this.echarts_info);  
-        console.error('echarts_info 或 learning_curve 未正确初始化');  
+       
         return;  
     }  
         // 配置数据
         lineCharts.setOption({
-            tooltip: {
+          title: {
+              text: 'Q值函数',
+               
+            },
+  // graphic: {  
+  //       type: 'text',  
+  //       left: 'left', // 文本位置，这里需要根据实际情况调整  
+  //       top: 'bottom', // 文本位置，这里需要根据实际情况调整  
+  //       z:10,
+  //       style: {  
+  //           text: '自定义文本解释', // 这里可以放置你想要的文本解释  
+  //           textAlign: 'center',  
+  //           fill: '#333', // 文本颜色  
+  //           fontSize: 14, // 文本大小  
+          
+  //       }  
+  //       // 注意：这里的位置是示意性的，你需要根据热力图的数据和布局来计算具体的位置  
+  //   },  
+  tooltip: {
     position: 'top'
   },
   grid: {

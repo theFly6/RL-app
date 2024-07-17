@@ -19,10 +19,9 @@ export default {
 
            // 图表的标题
            title: {
-              // 主标题
-              //text: '奖励信号',
-              // text: this.echarts_info.shap
-          },
+              text: 'shap',
+               
+            },
           yAxis: {
             type: 'category',
             

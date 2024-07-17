@@ -3,8 +3,9 @@
         <div class="back-home maxWH clearfix" >
             <!-- 头部 -->
             <div class="head-nav-f fixed">
-
-                <div class="userinfo flex-center">
+               
+                <div >
+                      
                         <!-- <img src="../../assets/avatar.gif" alt="avatar" class="avatar"> -->
                         <!-- 下拉菜单 -->
                         <span class="drop-down-list">
@@ -15,57 +16,66 @@
                                     <i class="el-icon-arrow-down el-icon--right"></i>
                                 </span>
                                 <el-dropdown-menu slot="dropdown" >
-                                    
-                                    <!-- <el-select v-model="searchForm.user_status" placeholder="请选择实验状态">
-                                        <el-option v-for="us in user_status" :key="us.value" :label="us.label" :value="us.value">
-                                        </el-option>
-                                     </el-select> -->
-
-
 
                                     <el-dropdown-item v-for="item in testdetail[0].episode"  @click.native.prevent.stop="goPath1('episodeinfo',testdetail[0].test_id,item)" >
                                       <!-- {{ testdetail[0].test_id }} -->
                                         episode：{{ item }}
                                     </el-dropdown-item>
-                                   
-                                   
-                                    
-
                                   
                                 </el-dropdown-menu>
+                               
+                                
                             </el-dropdown>
                         </span>
-                    </div>
+                       
+                       
+                 </div>
+                
+            
 
-            </div>
+            
+                </div>
+                <div class="head-nav-e fixed "> 
+                    <input type="number"  v-model="episodeInput" placeholder="请输入指定episode" class="blue-border">  
+                    <button @click.prevent.stop="goPath1('episodeinfo',testdetail[0].test_id,episodeInput)" >查看</button> 
+                   
+                
+                </div>
+                
             <div class="header flex-center">
 
                 <!-- 左侧两个卡片 -->
                 <div class="left-card flex-center">
                    
                         
-                    <div class="title flex-center">
+                    <div class="title1">
                             <span>环境状态</span>
                         </div>
-                            <LineChart4 :echarts_info="echarts_list"></LineChart4>
+                            <LineChart4 :test_detail_id="test_detail_id":episode_id="episode_id"></LineChart4>
                         
                             <div class="title flex-center">
-                            <span>动作选择</span>
+                            <!-- <span>动作选择</span> -->
                         </div>
                             <ScatterMap :echarts_info="echarts_list"></ScatterMap>
-                        
+                            <span class="text">横坐标：step；纵坐标：0代表向左，1代表向右,对应每一步的动作选择</span>
                          
                 </div>
                 <div class="right-card flex-center">
-                    <div class="title flex-center">
+                    <!-- <div class="title flex-center">
                             <span>shap</span>
                         </div>
                         <ShadowChart :echarts_info="echarts_list"></ShadowChart>
-                        
-                            <div class="title flex-center">
-                            <span>Q值函数</span>
+                         -->
+                         <div class="title flex-center">
+                            <!-- <span>价值函数</span> -->
+                        </div>
+                        <LineChart1 :echarts_info="echarts_list"></LineChart1>
+                        <span class="text">横坐标：step；纵坐标：对应每个状态的长期价值</span>
+                        <div class="title flex-center">
+                            <!-- <span>Q值函数</span> -->
                         </div>
                             <HeatMap :echarts_info="echarts_list"></HeatMap>
+                            <span class="text">横坐标：step；纵坐标：0代表向左，1代表向右,对应方块颜色深浅及具体数值代表当前step的Q值</span>
                         
                    
                 </div>
@@ -73,22 +83,26 @@
             </div>
             <!-- 底部 -->
             <div class="floor flex-center">
-                <!--价值函数-->
-                <div class="left-line">
-               
-                    <LineChart1 :echarts_info="echarts_list"></LineChart1>
-                </div>
-                <!-- 奖励信号 -->
+                
                 <div class="left-line">
                     <LineChart2 :echarts_info="echarts_list"></LineChart2>
+                    <span class="text">横坐标：episode；纵坐标：奖励值</span>
                 </div>
                 <!-- 学习曲线 -->
                 <div class="left-line">
                     <LineChart3 :echarts_info="echarts_list"></LineChart3>
+                    <span class="text">横坐标：episode；纵坐标：损失值</span>
                 </div>
                 
-
-
+            </div>
+            <div class="floor ">
+               
+                <div class="title flex-center">
+                <!-- <span>shap</span> -->
+                 </div>
+                <ShadowChart :echarts_info="echarts_list"></ShadowChart>
+                        
+                
             </div>
         </div>
         
@@ -113,6 +127,7 @@ export default {
         return {
             user_identity_admin: user_identity_admin,
             user_identity_user: user_identity_user,
+            episodeInput: null, // 用于绑定input的值  
         }
     },
    
@@ -128,6 +143,11 @@ export default {
     mounted() {
     this.getEchartsList();
   },
+  created() {  
+    this.episode_id = ''
+    this.test_detail_id = this.$route.query.test_detail_id
+    console.log(this.test_detail_id)
+},
     methods: {
         // 路由判断
         getFrontPath(path) {
@@ -176,11 +196,11 @@ export default {
     padding: .1rem;
 
     .header {
+
+        margin-top:80px;
         width: 100%;
         height: 100%;
         justify-content: space-between;
-        
-       
         .left-card {
             width: 40%;
             height: 100%;
@@ -192,9 +212,8 @@ export default {
                 height: 100%;
 
                 .title {
-                    font-size: .13rem;
-                    color: rgb(160, 180, 180);
-                    justify-content: space-between;
+                    font-size: .28rem;
+                    // color: rgb(160, 180, 180);
                 }
 
                
@@ -228,8 +247,8 @@ export default {
         width: 100%;
         height: 55%;
         margin-top: 2%;
-        border-radius: .05rem;
-        box-shadow: 0 0 .1rem rgba(0, 0, 0, .1);
+        // border-radius: .05rem;
+        // box-shadow: 0 0 .1rem rgba(0, 0, 0, .1);
 
         .left-line {
             width: 70%;
@@ -321,11 +340,35 @@ export default {
     // border-bottom: 1px solid #1f2d3d;
     overflow: hidden;
     margin-top: 61px;
-   
-    
-
-   
-
-
 }
+
+.head-nav-e {
+    z-index: 1;
+    width: 12%;
+    height: 50px;
+    min-width: 100px;
+    box-sizing: border-box;
+    padding: 5px 20px 10px 10px;
+    background: #324057;
+    color: #fff;
+    // border-bottom: 1px solid #1f2d3d;
+    overflow: hidden;
+    margin-left: 150px;
+    margin-top: 61px;
+    font-size:14px;
+    display:inline-block
+}
+.text{
+    font-size:12px;
+    padding-top:3px
+}
+.blue-border {  
+  border: 1px solid #409EFF;  
+}
+.title1 {
+        font-size: 18px;
+        // color: #555;
+        font-weight: 900;
+        margin-right:480px
+    }
 </style>
