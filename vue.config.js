@@ -39,7 +39,7 @@ module.exports = defineConfig({
 //     }
 //   }
 
-  devServer: {                //记住，别写错了devServer//设置本地默认端口  选填
+  devServer: {                //devServer//设置本地默认端口  选填
     open: true,//是否自动弹出浏览器页面
     host: '127.0.0.1',
     // port: 8001,
@@ -55,8 +55,19 @@ module.exports = defineConfig({
             // pathRewrite: {                   //路径重写
             //     '/api': ''                     //选择忽略拦截器里面的单词
             // }
-        }
+        },
+        '/arg': {  
+          target: 'http://127.0.0.1:5000', // 另一个代理的目标地址  
+          changeOrigin: true, // 是否跨域  
+          // pathRewrite: { '^/api2': '' } // 如果需要路径重写，可以添加  
+        },
+        '/lida': {  
+          target: 'http://127.0.0.1:9540', // 另一个代理的目标地址  
+          changeOrigin: true, // 是否跨域  
+          // pathRewrite: { '^/api2': '' } // 如果需要路径重写，可以添加  
+        }    
     }
+    
 }
 
 })

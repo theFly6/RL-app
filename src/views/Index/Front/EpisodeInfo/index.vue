@@ -55,7 +55,7 @@
                    
                         
                     <div class="title flex-center">
-                            <span>环境状态</span>
+                            <span style="font-size: .13rem;justify-content: space-between">环境状态</span>
                     </div>
                         <LineChart4 :test_detail_id="test_detail_id":episode_id="episode_id"></LineChart4>
                         <div class="title flex-center">

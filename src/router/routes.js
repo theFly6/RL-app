@@ -88,7 +88,11 @@ export default [
                         path: 'episodeinfo',
                         component: () => import('@/views/Index/Front/EpisodeInfo'),
                         props:true
-                    }
+                    },
+                    {
+                        path: 'lida',
+                        component: () => import('@/views/Index/Front/lida')
+                    },
                 ]  
             }     
         ]

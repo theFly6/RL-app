@@ -47,6 +47,7 @@
                                 @click.native.prevent.stop="goPath('reserveinfo')">实验管理</el-menu-item>
                         </el-submenu> -->
                         <el-menu-item index="1" @click.native.prevent.stop="goPath('addtest')">算法管理</el-menu-item>
+                        <el-menu-item index="2" @click.native.prevent.stop="goPath('lida')">lida</el-menu-item>
                         <el-menu-item index="3" @click.native.prevent.stop="goPath('feedback')">问题反馈</el-menu-item>
                         <el-menu-item index="4" style="position: relative;"
                             @click.native.prevent.stop="goPath('notice')">

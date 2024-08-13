@@ -136,7 +136,8 @@
                 <el-button type="primary" @click.native.prevent.stop="evaluateTest('testDetailForm')">提交计算</el-button>
                 <!-- <el-button type="primary" @click.native.prevent.stop="updateTest('testUpdateForm')">确 定</el-button> -->
             </div>
-            <div class="el-dialog__title">mean reward:-1303.4206398</div> 
+            <!-- <div class="el-dialog__title">mean reward:-1303.4206398</div>  -->
+            <div class="el-dialog__title">mean reward:{{testDetailForm.reward}}</div> 
         </el-dialog>
     </div>
 </template>
@@ -403,6 +404,7 @@ export default {
                 buffer_size: hyperparameters.buffer_size,
                 ent_coef: hyperparameters.ent_coef,
                 vf_coef: hyperparameters.vf_coef,
+                reward: hyperparameters.reward,
             }
         
            
@@ -431,7 +433,7 @@ export default {
                 }
             })
         },
-         // 修改实验信息
+         // 评价实验信息
          async evaluateTest(formname) {
             try {
                         const testinfo = {
@@ -449,13 +451,13 @@ export default {
                             vf_coef: this.testDetailForm.vf_coef,
                         }
                         
-                        await this.$store.dispatch('updateTestInfo', JSON.stringify(testinfo))
+                        await this.$store.dispatch('evaluateTest', JSON.stringify(testinfo))
                             .then(res => {
                                 this.resetForm(formname)
                                 this.testUpdateDialog = false
                                 this.$message({ type: 'success', message: res })
                                 // 重新获取实验列表
-                                this.getTestList()
+                                // this.getTestList()
                             }).catch(err => this.$message({ type: 'warning', message: err.message }))
                     } catch (e) {
                         this.$message({ type: 'warning', message: e.message })

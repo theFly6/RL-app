@@ -19,19 +19,61 @@ function endLoading() {
 }
 
 // 创建axios实例
-const requests = axios.create({
+const requestsA = axios.create({
     baseURL: '/api',
+    timeout: 20000
+})
+const requestsB = axios.create({
+    baseURL: '/arg',
+    timeout: 20000
+})
+const requestsC = axios.create({
+    baseURL: '/lida',
     timeout: 20000
 })
 
 // 请求拦截器
-requests.interceptors.request.use(config => {
+requestsA.interceptors.request.use(config => {
     startLoading()
     return config
 })
 
 // 响应拦截器
-requests.interceptors.response.use(
+requestsA.interceptors.response.use(
+    res => {
+        endLoading()
+        return res
+    },
+    err => {
+        endLoading()
+        return Promise.reject(new Error(err))
+    }
+)
+// 请求拦截器
+requestsB.interceptors.request.use(config => {
+    startLoading()
+    return config
+})
+
+// 响应拦截器
+requestsB.interceptors.response.use(
+    res => {
+        endLoading()
+        return res
+    },
+    err => {
+        endLoading()
+        return Promise.reject(new Error(err))
+    }
+)
+// 请求拦截器
+requestsC.interceptors.request.use(config => {
+    startLoading()
+    return config
+})
+
+// 响应拦截器
+requestsC.interceptors.response.use(
     res => {
         endLoading()
         return res
@@ -42,4 +84,5 @@ requests.interceptors.response.use(
     }
 )
 
-export default requests
+// export default requestsA
+export { requestsA, requestsB,requestsC };

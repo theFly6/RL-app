@@ -51,7 +51,7 @@
                     <div class="title1">
                             <span>环境状态</span>
                         </div>
-                            <LineChart4 :test_detail_id="test_detail_id":episode_id="episode_id"></LineChart4>
+                            <LineChart4 :test_detail_id="test_detail_id":episode_id="0"></LineChart4>
                         
                             <div class="title flex-center">
                             <!-- <span>动作选择</span> -->

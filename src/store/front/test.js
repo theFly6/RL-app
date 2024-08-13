@@ -1,4 +1,4 @@
-import { reqAddTest, reqGetUserList,reqGetTestList, reqUpdateTestInfo, reqDelUser, reqFrontUpdateTestInfo} from '@/api'
+import { reqAddTest, reqGetUserList,reqGetTestList, reqUpdateTestInfo, reqDelUser, reqFrontUpdateTestInfo,reqEvaluateTest} from '@/api'
 
 
 //state对象，存储组件的状态
@@ -30,7 +30,7 @@ const actions = {
     },
     // 获取实验列表
     async getTestList({ commit }, info) {
-        console.log(info)
+        // console.log(info)
        let result = await reqGetTestList(info)
        
         // let result = await reqGetUserList(info)
@@ -55,6 +55,19 @@ const actions = {
             return Promise.reject(new Error(result.msg || 'fail'))
         }
     },
+    // 评价试验
+    async evaluateTest({ commit }, test) {
+        let result = await reqEvaluateTest(test)
+        
+        result = result.data
+       
+        if (result.status === 0) {
+            return result.msg || 'ok'
+        } else {
+            return Promise.reject(new Error(result.msg || 'fail'))
+        }
+    },
+
     // 封禁用户
     async delUser({ commit }, user = {}) {//eslint-disable-line no-unused-vars
         let result = await reqDelUser(user)
